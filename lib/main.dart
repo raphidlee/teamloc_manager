@@ -5,7 +5,7 @@ void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  static const String _title = 'Team Loc';
+  static const String _title = 'TeamLoc Manager';
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Team Loc Manager'),
+            title: const Text('TeamLoc Manager'),
           ),
           body: const MainMap(),
           drawer: Drawer(
