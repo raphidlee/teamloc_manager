@@ -1,8 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- <uses-permission android:minSdkVersion="34" android:name="android.permission.USE_EXACT_ALARM" /> -->
     <application
+        tools:replace="android:label"
         android:label="teamloc"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="479bc155019ece1cacaa1777594682a73e7bd10464cff41ecfd40ca26760808a" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

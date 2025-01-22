@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:teamloc/map.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  static const String _title = 'Flutter Stateful Clicker Counter';
+  static const String _title = 'Team Loc';
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,48 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // useMaterial3: false,
         primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.dark(
+          primary: Colors.brown, // 주요 색상
+          secondary: Colors.grey, // 보조 색상
+        ),
       ),
-      home: const MyHomePage(),
+      home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Team Loc Manager'),
+          ),
+          body: const MainMap(),
+          drawer: Drawer(
+            // Add a ListView to the drawer. This ensures the user can scroll
+            // through the options in the drawer if there isn't enough vertical
+            // space to fit everything.
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: [
+                const DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text('Drawer Header'),
+                ),
+                ListTile(
+                  title: const Text('Item 1'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: const Text('Item 2'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
@@ -31,6 +72,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ////
+    // 1.  Listen to events (See docs for all 12 available events).
+    //
+  }
 
   void _incrementCounter() {
     setState(() {
