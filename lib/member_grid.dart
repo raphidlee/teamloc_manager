@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:teamloc/dto/json/player.dart';
 
+import 'controller/gameinfo_controller.dart';
+
 /// The home page of the application which hosts the datagrid.
 class MemberGrid extends StatefulWidget {
-  List<Player> players;
+  List<Player> players = [];
   Function filterFunction;
   /// Creates the home page.
   MemberGrid({Key? key, required this.players, required this.filterFunction}) : super(key: key);
@@ -14,7 +17,6 @@ class MemberGrid extends StatefulWidget {
 }
 
 class _MemberGridState extends State<MemberGrid> {
-
   final List<PlutoColumn> columns = <PlutoColumn>[
     PlutoColumn(
       title: 'Color',
@@ -34,7 +36,7 @@ class _MemberGridState extends State<MemberGrid> {
     ),
   ];
 
-  late List<PlutoRow> rows ;
+  // late List<PlutoRow> rows;
 
   /// columnGroups that can group columns can be omitted.
   final List<PlutoColumnGroup> columnGroups = [
@@ -42,47 +44,53 @@ class _MemberGridState extends State<MemberGrid> {
     PlutoColumnGroup(title: 'nick', fields: ['nick']),
     PlutoColumnGroup(title: 'status', fields: ['status']),
   ];
-  void checkCallback(PlutoGridOnRowCheckedEvent event){
+
+  void checkCallback(PlutoGridOnRowCheckedEvent event) {
     // print(event.isAll);
     // print(event.isRow);
     print(stateManager.checkedRows.length);
-    widget.filterFunction.call(filter:stateManager.checkedRows.map((e)=>e.key.toString()).toSet());
+    Get.find<GameInfoController>().drawInitialLines(
+        filter: stateManager.checkedRows.map((e) => e.key.toString()).toSet());
   }
+
   /// [PlutoGridStateManager] has many methods and properties to dynamically manipulate the grid.
   /// You can manipulate the grid dynamically at runtime by passing this through the [onLoaded] callback.
-  late final PlutoGridStateManager stateManager;
+  late PlutoGridStateManager stateManager;
+  UniqueKey k = UniqueKey();
+
   @override
   void initState() {
     super.initState();
-    rows = widget.players
-        .map((player) => PlutoRow(
-              key: Key(player.memberInfo.id),
-              checked: true,
-              cells: {
-                'color': PlutoCell(value: player.lineColor),
-                'nick': PlutoCell(value: player.memberInfo.nickName),
-                'status': PlutoCell(value: player.status),
-              },
-            ))
-        .toList();
-
   }
 
   @override
   Widget build(BuildContext context) {
+    // Get.put(GameInfoController());
+    // return GetX<GameInfoController>(builder: (getMapController) {
+
     return PlutoGrid(
       columns: columns,
-      rows: rows,
+      rows: widget.players.map((player) => PlutoRow(
+                key: Key(player.memberInfo.id),
+                checked: true,
+                cells: {
+                  'color': PlutoCell(value: player.lineColor),
+                  'nick': PlutoCell(value: player.memberInfo.nickName),
+                  'status': PlutoCell(value: player.status),
+                },
+              ))
+          .toList(),
       columnGroups: columnGroups,
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager.setShowColumnFilter(false);
+        widget.filterFunction.call();
       },
       onChanged: (PlutoGridOnChangedEvent event) {
         print(event);
       },
       configuration: const PlutoGridConfiguration(
-        scrollbar: PlutoGridScrollbarConfig(isAlwaysShown: true),
+          scrollbar: PlutoGridScrollbarConfig(isAlwaysShown: true),
           columnSize:
               PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.scale)),
       onRowChecked: checkCallback,
@@ -90,5 +98,6 @@ class _MemberGridState extends State<MemberGrid> {
       //   return Color(context.row.cells['color']!.value);
       // },
     );
+    // });
   }
 }

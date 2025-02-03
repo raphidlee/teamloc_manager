@@ -1,7 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:teamloc/map.dart';
+import 'package:get/get.dart';
+import 'package:logging/logging.dart';
+void main(){
 
-void main() => runApp(const MyApp());
+  Logger.root.level = kDebugMode ? Level.ALL:Level.INFO;
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,7 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: _title,
       theme: ThemeData(
         // useMaterial3: false,
